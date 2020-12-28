@@ -3,6 +3,8 @@ import 'package:Better_UT_Menu/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// This is the page that shows the different meals served at a location (Breakfast, lunch, dinner)
+
 class MealPage extends StatelessWidget {
   String locationID;
 
@@ -11,13 +13,18 @@ class MealPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime date = DateTime.now();
+    // Date string used to search documents for today's meals
     String dateString = '${date.month}/${date.day}/${date.year}';
     return Scaffold(
       appBar: AppBar(
         title: Text('Locations'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('locations').doc(locationID).collection('meals').where('dateString', isEqualTo: dateString).snapshots(),
+        stream: FirebaseFirestore.instance
+          .collection('locations')
+          .doc(locationID)
+          .collection('meals')
+          .where('dateString', isEqualTo: dateString).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();

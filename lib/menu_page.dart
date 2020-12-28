@@ -2,6 +2,8 @@ import 'package:Better_UT_Menu/models.dart';
 
 import 'package:flutter/material.dart';
 
+// This is the page that display the menu items
+
 class MenuPage extends StatelessWidget {
   final Meal meal;
 
@@ -28,6 +30,7 @@ class MenuPage extends StatelessWidget {
     );
   }
 
+  // Returns a menu item and it's info along with actions
   Widget _getMenuItemRow(MenuItem menuItem) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -14,8 +14,8 @@ class MealPage extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime date = DateTime.now();
     // Date string used to search documents for today's meals
-    //String dateString = '${date.month}/${date.day}/${date.year}';
-    String dateString = '12/27/2020';
+    String dateString = '${date.month}-${date.day}-${date.year}';
+    //String dateString = '12/27/2020';
     return Scaffold(
       appBar: AppBar(
         title: Text('Locations'),

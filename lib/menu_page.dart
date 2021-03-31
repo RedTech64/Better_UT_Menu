@@ -35,7 +35,7 @@ class MenuPage extends StatelessWidget {
     for (Line line in meal.lines) {
       firstColumnChildren.add(
         Container(
-          width: 400,
+          width: 500,
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -84,32 +84,19 @@ class MenuPage extends StatelessWidget {
     // );
   }
 
-  List<Widget> _getFlagWidets(MenuItem menuItem) {
-    List<Widget> flagWidgets = [];
-    List<List<dynamic>> flags = [
-      [menuItem.beef, 'assets/beef.png', 'Beef'],
-      [menuItem.liteBites, 'assets/lite_bites.png', 'Lite Bites'],
-      [menuItem.milk, 'assets/milk.png', 'Milk'],
-      [menuItem.pork, 'assets/pork.png', 'Pork'],
-      [menuItem.shellfish, 'assets/shellfish.png', 'Shellfish'],
-      [menuItem.soy, 'assets/soy.png', 'Soy'],
-      [menuItem.treeNuts, 'assets/tree_nuts.png', 'Tree Nuts'],
-      [menuItem.vegan, 'assets/vegan.png', 'Vegan'],
-      [menuItem.veggie, 'assets/veggie.png', 'Veggie'],
-      [menuItem.wheat, 'assets/wheat.png', 'Wheat'],
-    ];
-    for (List<dynamic> flag in flags) {
-      if (flag[0]) {
-        flagWidgets.add(
-          Tooltip(
-            message: flag[2],
-            child: Image.asset(flag[1], width: FLAG_SIZE, height: FLAG_SIZE),
-          )
-        );
-        flagWidgets.add(Container(width: 8));
-      }
+  List<Widget> _getTagWidets(MenuItem menuItem) {
+    List<Widget> tagWidgets = [];
+    for (String tag in menuItem.tags) {
+      String fileName = 'assets/${tag.replaceAll(' ', '')}.png';
+      tagWidgets.add(
+        Tooltip(
+          message: tag,
+          child: Image.asset(fileName, width: FLAG_SIZE, height: FLAG_SIZE),
+        )
+      );
+      tagWidgets.add(Container(width: 8));
     }
-    return flagWidgets;
+    return tagWidgets;
   }
 
   // Returns a menu item and it's info along with actions
@@ -119,7 +106,7 @@ class MenuPage extends StatelessWidget {
         children: [
           Text(menuItem.name),
           Container(width: 8),
-          ..._getFlagWidets(menuItem)
+          ..._getTagWidets(menuItem)
         ],
       ),
       dense: true,

@@ -23,43 +23,51 @@ class MenuPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: _getColumns(),
+            child: _getColumns(context),
           ),
         ),
       ),
     );
   }
 
-  Widget _getColumns() {
+  Widget _getColumns(BuildContext context) {
     List<Widget> firstColumnChildren = [];
     for (Line line in meal.lines) {
+      List<DataRow> rows = [];
+      for (MenuItem menuItem in line.items) {
+        DataRow row = DataRow(
+
+          cells: _getTableRow(menuItem, context)
+        );
+        rows.add(row);
+      }
       firstColumnChildren.add(
         Container(
           width: 500,
           child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      line.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22
-                      ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    line.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22
                     ),
                   ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: line.items.length,
-                    itemBuilder: (context, itemIndex) => _getMenuItemRow(line.items[itemIndex], context),
-                    separatorBuilder: (context, index) => Divider(height: 0),
-                  ),
-                ],
-              ),
+                ),
+                DataTable(
+                  columns: [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Tags')),
+                    DataColumn(label: Text('Cal'), numeric: true),
+                    DataColumn(label: Text('')),
+                  ],
+                  rows: rows,
+                ),
+              ],
             ),
           ),
         )
@@ -99,32 +107,20 @@ class MenuPage extends StatelessWidget {
     return tagWidgets;
   }
 
-  // Returns a menu item and it's info along with actions
-  Widget _getMenuItemRow(MenuItem menuItem, BuildContext context) {
-    return ListTile(
-      title: Row(
-        children: [
-          Text(menuItem.name),
-          Container(width: 8),
-          ..._getTagWidets(menuItem)
-        ],
-      ),
-      dense: true,
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(menuItem.calories.toString()),
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => MenuItemDialog(menuItem),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+  List<DataCell> _getTableRow(MenuItem menuItem, BuildContext context) {
+    return [
+      DataCell(Text(menuItem.name)),
+      DataCell(Row(children: _getTagWidets(menuItem))),
+      DataCell(Text(menuItem.calories.round().toString())),
+      DataCell(IconButton(
+        icon: Icon(Icons.info),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => MenuItemDialog(menuItem),
+          );
+        },
+      )),
+    ];
   }
 }

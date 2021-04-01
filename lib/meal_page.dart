@@ -37,11 +37,14 @@ class MealPage extends StatelessWidget {
               Meal meal = meals[index];
               return Card(
                 child: InkWell(
-                  child: Text(
-                    meal.name,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      meal.name,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
                   onTap: () {

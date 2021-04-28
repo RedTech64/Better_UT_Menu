@@ -1,3 +1,17 @@
+class Location {
+  final String id;
+  final String name;
+  final List<String> mealNames;
+
+  Location({this.id, this.name, this.mealNames});
+
+  factory Location.fromJSON(Map<String, dynamic> json) => Location(
+    id: json['id'],
+    name: json['name'],
+    mealNames: json['mealNames'].cast<String>()
+  );
+}
+
 class Meal {
   final String name;
   final String dateString;
@@ -27,17 +41,32 @@ class Line {
 class MenuItem {
   final String name;
   final num calories;
+  final num carbs;
+  final num fat;
+  final num protein;
+  final num sugars;
+  final String factsLink;
   final List<String> tags;
 
   MenuItem({
     this.name,
     this.calories,
-    this.tags
+    this.carbs,
+    this.fat,
+    this.protein,
+    this.sugars,
+    this.tags,
+    this.factsLink
   });
 
   factory MenuItem.fromJSON(Map<String, dynamic> json) => MenuItem(
     name: json['name'],
     calories: json['calories'],
+    carbs: json['carbs'],
+    fat: json['fat'],
+    protein: json['protein'],
+    sugars: json['sugars'],
+    factsLink: json['factsLink'],
     tags: json['tags'].cast<String>()
   );
 }

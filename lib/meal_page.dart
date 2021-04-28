@@ -6,57 +6,38 @@ import 'package:flutter/material.dart';
 // This is the page that shows the different meals served at a location (Breakfast, lunch, dinner)
 
 class MealPage extends StatelessWidget {
-  String locationID;
+  Location location;
 
-  MealPage(this.locationID);
+  MealPage(this.location);
 
   @override
   Widget build(BuildContext context) {
-    DateTime date = DateTime.now();
-    // Date string used to search documents for today's meals
-    String dateString = '${date.month}-${date.day}-${date.year}';
-    //String dateString = '12/27/2020';
     return Scaffold(
       appBar: AppBar(
         title: Text('Locations'),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-          .collection('locations')
-          .doc(locationID)
-          .collection('meals')
-          .where('dateString', isEqualTo: dateString).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          }
-          List<Meal> meals = snapshot.data.docs.map((doc) => Meal.fromJSON(doc.data())).toList().cast<Meal>();
-          return ListView.builder(
-            itemCount: snapshot.data.docs.length,
+      body: Center(
+        child: Container(
+          width: 400,
+          child: ListView.builder(
+            itemCount: location.mealNames.length,
             itemBuilder: (context, index) {
-              Meal meal = meals[index];
+              String name = location.mealNames[index];
               return Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAlias,
                 child: InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      meal.name,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ),
+                  child: Image.asset('assets/$name.png'),
                   onTap: () {
                     Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) => MenuPage(meal),
+                      builder: (context) => MenuPage(location, name),
                     ));
                   },
                 ),
               );
             },
-          );
-        },
+          ),
+        )
       ),
     );
   }
